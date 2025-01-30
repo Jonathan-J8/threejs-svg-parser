@@ -40,7 +40,7 @@ export const mergeGeometries = (geometries: BufferGeometry[]) => {
 };
 
 export const guiDatas = {
-    url: "/svg_optimize_fill_only.svg",
+    url: "",
     fn: "SVGLoader.createShapes",
     strokes: true,
     fills: true,

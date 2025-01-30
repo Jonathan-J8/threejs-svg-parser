@@ -85,8 +85,8 @@ const _init = (canvas: HTMLCanvasElement) => {
         (userData.frustum * aspect) / 2,
         userData.frustum / 2,
         userData.frustum / -2,
-        -2000,
-        2000
+        0.1,
+        1000
     );
 
     camera.zoom = 1;
