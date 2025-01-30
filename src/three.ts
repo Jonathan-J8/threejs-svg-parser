@@ -118,7 +118,6 @@ const useThree = () => ({
 
     setCamera: ({ frustum, target }: { frustum: number; target: Vector2 }) => {
         if (controls && camera) {
-            console.log(frustum, target);
             camera.zoom = 1;
             camera.position.set(target.x, 1, target.y);
             controls.target.set(target.x, 0, target.y);
