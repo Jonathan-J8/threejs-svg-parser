@@ -1,13 +1,4 @@
-import {
-    AmbientLight,
-    AxesHelper,
-    GridHelper,
-    MOUSE,
-    OrthographicCamera,
-    Scene,
-    TOUCH,
-    WebGLRenderer,
-} from "three";
+import { MOUSE, OrthographicCamera, Scene, TOUCH, Vector2, WebGLRenderer } from "three";
 import { MapControls } from "three/examples/jsm/controls/MapControls.js";
 import { beforeUpdate } from "./helpers";
 
@@ -59,7 +50,6 @@ const _resize = () => {
 let once = false;
 const _animateFromControls = () => {
     if (!renderer || !camera) return;
-
     if (once) {
         renderer.setAnimationLoop(null);
         once = false;
@@ -68,7 +58,6 @@ const _animateFromControls = () => {
 };
 const _animateFromRenderer = () => {
     if (!renderer || !camera) return;
-
     renderer.render(scene, camera);
 };
 
@@ -107,11 +96,6 @@ const _init = (canvas: HTMLCanvasElement) => {
     controls.target.set(0, 0, 0);
     controls.zoomToCursor = true;
 
-    scene.add(new AxesHelper(1000));
-    scene.add(new GridHelper(1000));
-    scene.add(new AmbientLight(0xffffff, 10));
-    scene.add(camera);
-
     renderer = new WebGLRenderer({
         canvas,
         antialias: true,
@@ -132,12 +116,12 @@ beforeUpdate(_dispose);
 const useThree = () => ({
     scene,
 
-    resetCamera: (frustum: number) => {
+    setCamera: ({ frustum, target }: { frustum: number; target: Vector2 }) => {
         if (controls && camera) {
+            console.log(frustum, target);
             camera.zoom = 1;
-            camera.position.set(0, 1, 0);
-            camera.lookAt(0, 0, 0);
-            controls.target.set(0, 0, 0);
+            camera.position.set(target.x, 1, target.y);
+            controls.target.set(target.x, 0, target.y);
             controls.update();
         }
 

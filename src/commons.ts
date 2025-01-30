@@ -1,4 +1,4 @@
-import { BoxHelper, BufferAttribute, BufferGeometry, Color, Material, Mesh } from "three";
+import { BufferAttribute, BufferGeometry, Color, Vector2 } from "three";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 export const vertexShader = `
@@ -38,6 +38,18 @@ export const mergeGeometries = (geometries: BufferGeometry[]) => {
     geometry.computeBoundingBox();
     return geometry;
 };
+export const getGeomtryCenter = (geometry: BufferGeometry) => {
+    const positions = geometry.getAttribute("position");
+
+    const vec2 = new Vector2();
+    for (let index = 0; index < positions.count; index++) {
+        vec2.x += positions.getX(index);
+        vec2.y += positions.getY(index);
+    }
+
+    vec2.divideScalar(positions.count);
+    return vec2;
+};
 
 export const guiDatas = {
     url: "",
@@ -46,7 +58,7 @@ export const guiDatas = {
     fills: true,
     strokesWireframe: false,
     fillsWireframe: false,
-    boxHelper: false,
+    helpers: false,
 };
 
 export type GuiDatas = typeof guiDatas;

@@ -10,6 +10,7 @@ import {
     ShapeGeometry,
     ShapePath,
     ShapeUtils,
+    Vector2,
     Vector3,
 } from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
@@ -19,6 +20,7 @@ import {
     addColorAttribute,
     type GuiDatas,
     mergeGeometries,
+    getGeomtryCenter,
 } from "./commons";
 
 const parse = (value: string, options: GuiDatas) => {
@@ -37,7 +39,7 @@ const parse = (value: string, options: GuiDatas) => {
         const path = svgData.paths[i] as ShapePath & { userData: any };
         const { fill, fillOpacity, stroke, strokeOpacity } = path.userData?.style;
 
-        if (stroke && stroke !== "none" && stroke !== fill) {
+        if (stroke && stroke !== "none") {
             for (let j = 0, len = path.subPaths.length; j < len; ++j) {
                 const subPath = path.subPaths[j];
                 const geometry = SVGLoader.pointsToStroke(subPath.getPoints(), path.userData.style);
@@ -50,9 +52,8 @@ const parse = (value: string, options: GuiDatas) => {
         }
 
         if (fill && fill !== "none") {
-            let shapes: Shape[];
-
             try {
+                let shapes: Shape[];
                 if (options.fn === "ShapePath.toShapes CW") shapes = path.toShapes(false);
                 else if (options.fn === "ShapePath.toShapes CCW") shapes = path.toShapes(true);
                 else if (options.fn === "ShapePath.toShapes Auto")
@@ -132,7 +133,7 @@ const parse = (value: string, options: GuiDatas) => {
     }
 
     /**
-     * setup group
+     * setup group, size group and geometry center
      */
 
     const box = new Box3();
@@ -141,9 +142,12 @@ const parse = (value: string, options: GuiDatas) => {
     box.getSize(size);
 
     group.rotation.x = Math.PI * 0.5;
-    group.position.set(size.x * -0.5, 0, size.y * -0.5);
 
-    return { group, width: size.x, height: size.y, error };
+    const center = new Vector2();
+    const firstMesh = group.children[0];
+    if (firstMesh instanceof Mesh) center.copy(getGeomtryCenter(firstMesh.geometry));
+
+    return { group, width: size.x, height: size.y, center, error };
 };
 
 const parser = { parse };

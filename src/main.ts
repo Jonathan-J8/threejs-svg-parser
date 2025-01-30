@@ -3,7 +3,7 @@ import GUI from "lil-gui";
 import useThree from "./three";
 import parser from "./parser";
 import { guiDatas } from "./commons";
-import { BoxHelper } from "three";
+import { AxesHelper, BoxHelper, GridHelper } from "three";
 
 const gui = new GUI();
 const three = useThree();
@@ -17,25 +17,25 @@ guiDatas.strokes = true;
 guiDatas.fills = true;
 guiDatas.strokesWireframe = false;
 guiDatas.fillsWireframe = false;
-guiDatas.boxHelper = false;
+guiDatas.helpers = false;
 
 const update = async () => {
-    const { url, boxHelper } = guiDatas;
+    const { url, helpers } = guiDatas;
     const res = await fetch(url);
     svgContainer.innerHTML = await res.text();
 
-    three.scene.clear();
-    const { group, width, error } = parser.parse(svgContainer.innerHTML, guiDatas);
+    const { group, width, center, error } = parser.parse(svgContainer.innerHTML, guiDatas);
 
-    if (boxHelper) {
-        const box = new BoxHelper(group);
-        three.scene.add(box);
+    // reset camera to default
+    if (url !== prevUrl) three.setCamera({ frustum: width, target: center });
+    three.scene.clear();
+
+    if (helpers) {
+        three.scene.add(new AxesHelper(100));
+        three.scene.add(new GridHelper(1000));
+        three.scene.add(new BoxHelper(group));
     }
     three.scene.add(group);
-    if (url !== prevUrl) {
-        // reset camera to default
-        three.resetCamera(width);
-    }
 
     errorContainer.innerText = error || "";
     prevUrl = url;
@@ -66,4 +66,4 @@ gui.add(guiDatas, "strokes").name("Draw strokes").onChange(update);
 gui.add(guiDatas, "fills").name("Draw fill shapes").onChange(update);
 gui.add(guiDatas, "strokesWireframe").name("Wireframe strokes").onChange(update);
 gui.add(guiDatas, "fillsWireframe").name("Wireframe fill shapes").onChange(update);
-gui.add(guiDatas, "boxHelper").name("Box helper").onChange(update);
+gui.add(guiDatas, "helpers").name("Helpers").onChange(update);
