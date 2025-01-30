@@ -1,0 +1,59 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: lightgray;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+    display: flex;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+#canvas {
+    width: 50%;
+    height: 100vh;
+}
+
+#svg {
+    width: 50%;
+    height: 100vh;
+    border-left: solid 1px gray;
+    overflow: auto;
+}
+
+#error {
+    color: red;
+    position: absolute;
+    top: 0;
+    left: 1rem;
+}
+
+.left,
+.right {
+    color: black;
+    position: absolute;
+    bottom: 0;
+    text-transform: uppercase;
+}
+.left {
+    left: 1rem;
+}
+.right {
+    right: 1rem;
+}
