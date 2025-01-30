@@ -11,7 +11,7 @@ const svgContainer = document.getElementById("svg") as HTMLElement;
 const errorContainer = document.getElementById("error") as HTMLElement;
 
 let prevUrl = "";
-guiDatas.url = "/optimize_part4_not_rendered.svg";
+guiDatas.url = "/part4_not_rendered.svg";
 guiDatas.fn = "SVGLoader.createShapes";
 guiDatas.strokes = true;
 guiDatas.fills = true;
@@ -44,13 +44,13 @@ const update = async () => {
 update();
 
 gui.add(guiDatas, "url", [
+    "/part4_not_rendered.svg",
     "/original_fill_only.svg",
-    "/optimize_fill_only.svg",
-    "/optimize_part1.svg",
-    "/optimize_part2.svg",
-    "/optimize_part3.svg",
-    "/optimize_part4.svg",
-    "/optimize_part4_not_rendered.svg",
+    "/optimized_fill_only.svg",
+    "/part1_optimized.svg",
+    "/part2_optimized.svg",
+    "/part3_optimized.svg",
+    "/part4_optimized.svg",
 ])
     .name("SVG file")
     .onChange(update);
