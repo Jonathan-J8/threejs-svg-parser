@@ -11,7 +11,7 @@ const svgContainer = document.getElementById("svg") as HTMLElement;
 const errorContainer = document.getElementById("error") as HTMLElement;
 
 let prevUrl = "";
-guiDatas.url = "/part4_not_rendered.svg";
+guiDatas.url = "/part5_not_rendered.svg";
 guiDatas.fn = "SVGLoader.createShapes";
 guiDatas.strokes = true;
 guiDatas.fills = true;
@@ -26,7 +26,6 @@ const update = async () => {
 
     const { group, width, center, error } = parser.parse(svgContainer.innerHTML, guiDatas);
 
-    // reset camera to default
     if (url !== prevUrl) three.setCamera({ frustum: width, target: center });
     three.scene.clear();
 
@@ -44,6 +43,7 @@ const update = async () => {
 update();
 
 gui.add(guiDatas, "url", [
+    "/part5_not_rendered.svg",
     "/part4_not_rendered.svg",
     "/original_fill_only.svg",
     "/optimized_fill_only.svg",
