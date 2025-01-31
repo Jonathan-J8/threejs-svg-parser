@@ -1,6 +1,13 @@
 import { BufferAttribute, BufferGeometry, Color, Vector2 } from "three";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
+export const onHMR = (cb: () => void) => {
+    import.meta?.hot?.on("vite:beforeUpdate", cb);
+};
+export const onFullReload = (cb: () => void) => {
+    import.meta?.hot?.on("vite:beforeFullReload", cb);
+};
+
 export const vertexShader = `
     in vec4 color;
     out vec4 vColor;
