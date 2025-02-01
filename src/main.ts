@@ -27,8 +27,8 @@ const update = async (datas?: any) => {
     errorContainer.innerText = error || "";
 };
 
-const fecthFile = async (str: string) => {
-    const res = await fetch(str, { mode: "no-cors" });
+const fecthFile = async (url: string) => {
+    const res = await fetch(`${__BASE_URL__}${url}`);
     const text = await res.text();
     svgContainer.innerHTML = text;
     update({ resetCamera: true });
@@ -51,7 +51,7 @@ const uploadFile = async () => {
     };
 };
 
-guiDatas.inputSelect = "/part5_not_rendered.svg";
+guiDatas.inputSelect = "part5_not_rendered.svg";
 guiDatas.fn = "SVGLoader.createShapes";
 guiDatas.strokes = "full";
 guiDatas.fills = "full";
@@ -63,14 +63,14 @@ fecthFile(guiDatas.inputSelect);
 {
     const f = gui.addFolder("SVG FILE");
     f.add(guiDatas, "inputSelect", [
-        "/part5_not_rendered.svg",
-        "/part4_not_rendered.svg",
-        "/original_fill_only.svg",
-        "/optimized_fill_only.svg",
-        "/part1_optimized.svg",
-        "/part2_optimized.svg",
-        "/part3_optimized.svg",
-        "/part4_optimized.svg",
+        "part5_not_rendered.svg",
+        "part4_not_rendered.svg",
+        "original_fill_only.svg",
+        "optimized_fill_only.svg",
+        "part1_optimized.svg",
+        "part2_optimized.svg",
+        "part3_optimized.svg",
+        "part4_optimized.svg",
     ])
         .name("Select an file")
         .onChange(fecthFile);
