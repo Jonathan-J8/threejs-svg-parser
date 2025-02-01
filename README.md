@@ -1,5 +1,7 @@
 # Threejs svg parser
 
+Github page -> https://jonathan-j8.github.io/threejs-svg-parser/
+
 This repository highlights some edge cases not handled by [SvgLoader](https://threejs.org/docs/#examples/en/loaders/SVGLoader).
 
 ![screenshoot](./public/screenshoot.jpg)
