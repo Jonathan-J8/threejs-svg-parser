@@ -59,13 +59,15 @@ export const getGeomtryCenter = (geometry: BufferGeometry) => {
 };
 
 export const guiDatas = {
-    url: "",
+    inputSelect: "",
+    inputUrl: "your URL",
+    inputFile: () => document.getElementById("inputFile")?.click(),
     fn: "SVGLoader.createShapes",
-    strokes: true,
-    fills: true,
-    strokesWireframe: false,
-    fillsWireframe: false,
+    strokes: "full",
+    fills: "full",
+
     helpers: false,
+    bottomView: false,
 };
 
 export type GuiDatas = typeof guiDatas;

@@ -96,15 +96,29 @@ _init(canvas);
 const useThree = () => ({
     scene,
 
-    setCamera: ({ frustum, target }: { frustum: number; target: Vector2 }) => {
-        if (controls && camera) {
-            camera.zoom = 1;
-            camera.position.set(target.x, 1, target.y);
-            controls.target.set(target.x, 0, target.y);
-            controls.update();
-        }
+    setCamera: ({
+        frustum,
+        target,
+        bottomView,
+    }: {
+        frustum?: number;
+        target?: Vector2;
+        bottomView?: boolean;
+    }) => {
+        if (!controls || !camera) return;
+        camera.zoom = 1;
+        const y = bottomView ? -1 : 1;
 
-        userData.frustum = frustum;
+        if (target) {
+            camera.position.x = target.x;
+            camera.position.z = target.y;
+            controls.target.set(target.x, 0, target.y);
+        } else {
+            camera.position.y = y;
+        }
+        controls.update();
+
+        if (typeof frustum === "number") userData.frustum = frustum;
         _resize();
     },
 });

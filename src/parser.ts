@@ -1,5 +1,5 @@
 import {
-    BackSide,
+    DoubleSide,
     Box3,
     BufferGeometry,
     Color,
@@ -34,12 +34,14 @@ const parse = (value: string, options: GuiDatas) => {
     /**
      * grab geometries datas
      */
+    const drawFills = options.fills === "full" || options.fills === "wireframe";
+    const drawStrokes = options.strokes === "full" || options.strokes === "wireframe";
 
     for (let i = 0, len = svgData.paths.length; i < len; ++i) {
         const path = svgData.paths[i] as ShapePath & { userData: any };
         const { fill, fillOpacity, stroke, strokeOpacity } = path.userData?.style;
 
-        if (stroke && stroke !== "none") {
+        if (drawStrokes && stroke && stroke !== "none") {
             for (let j = 0, len = path.subPaths.length; j < len; ++j) {
                 const subPath = path.subPaths[j];
                 const geometry = SVGLoader.pointsToStroke(subPath.getPoints(), path.userData.style);
@@ -51,7 +53,7 @@ const parse = (value: string, options: GuiDatas) => {
             }
         }
 
-        if (fill && fill !== "none") {
+        if (drawFills && fill && fill !== "none") {
             try {
                 let shapes: Shape[];
                 if (options.fn === "ShapePath.toShapes CW") shapes = path.toShapes(false);
@@ -78,58 +80,32 @@ const parse = (value: string, options: GuiDatas) => {
 
     if (fillGeometries.length > 0) {
         const geometry = mergeGeometries(fillGeometries);
-        if (options.fills) {
-            const material = new ShaderMaterial({
-                vertexShader,
-                fragmentShader,
-                side: BackSide,
-                depthWrite: false,
-            });
-            const mesh = new Mesh(geometry, material);
-            mesh.renderOrder = 0;
-            group.add(mesh);
-        }
 
-        if (options.fillsWireframe) {
-            const material = new ShaderMaterial({
-                vertexShader,
-                fragmentShader,
-                side: BackSide,
-                depthWrite: false,
-                wireframe: true,
-            });
-            const mesh = new Mesh(geometry, material);
-            mesh.renderOrder = 2;
-            group.add(mesh);
-        }
+        const material = new ShaderMaterial({
+            vertexShader,
+            fragmentShader,
+            side: DoubleSide,
+            depthWrite: false,
+            wireframe: options.fills === "wireframe",
+        });
+        const mesh = new Mesh(geometry, material);
+        mesh.renderOrder = 0;
+        group.add(mesh);
     }
 
     if (strokeGeometries.length > 0) {
         const geometry = mergeGeometries(strokeGeometries);
 
-        if (options.strokes) {
-            const material = new ShaderMaterial({
-                vertexShader,
-                fragmentShader,
-                side: BackSide,
-                depthWrite: false,
-            });
-            const mesh = new Mesh(geometry, material);
-            mesh.renderOrder = 1;
-            group.add(mesh);
-        }
-        if (options.strokesWireframe) {
-            const material = new ShaderMaterial({
-                vertexShader,
-                fragmentShader,
-                side: BackSide,
-                depthWrite: false,
-                wireframe: true,
-            });
-            const mesh = new Mesh(geometry, material);
-            mesh.renderOrder = 3;
-            group.add(mesh);
-        }
+        const material = new ShaderMaterial({
+            vertexShader,
+            fragmentShader,
+            side: DoubleSide,
+            depthWrite: false,
+            wireframe: options.strokes === "wireframe",
+        });
+        const mesh = new Mesh(geometry, material);
+        mesh.renderOrder = 1;
+        group.add(mesh);
     }
 
     /**
