@@ -55,9 +55,10 @@ const parse = (value: string, options: GuiDatas) => {
         if (drawFills && fill && fill !== "none") {
             try {
                 let shapes: Shape[];
-                if (options.fn === "ShapePath.toShapes CW") shapes = path.toShapes(false);
-                else if (options.fn === "ShapePath.toShapes CCW") shapes = path.toShapes(true);
-                else if (options.fn === "ShapePath.toShapes Auto")
+                if (options.fn === "ShapePath.toShapes(holes CW)") shapes = path.toShapes(false);
+                else if (options.fn === "ShapePath.toShapes(holes CCW)")
+                    shapes = path.toShapes(true);
+                else if (options.fn === "ShapePath.toShapes(holes Auto)")
                     shapes = path.toShapes(ShapeUtils.isClockWise(path.subPaths[0].getPoints()));
                 else shapes = SVGLoader.createShapes(path);
 

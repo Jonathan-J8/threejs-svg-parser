@@ -70,7 +70,7 @@ gui.add(guiDatas, "bottomView").name("Bottom view").onChange(update);
         "part4_optimized.svg",
         "part4_not_rendered.svg",
         "part5_not_rendered.svg",
-        "triangle2.svg",
+        "triangle3And4.svg",
     ])
         .name("Select a file")
         .onChange(fecthFile);
@@ -87,9 +87,9 @@ gui.add(guiDatas, "bottomView").name("Bottom view").onChange(update);
         .onChange(update);
     f.add(guiDatas, "fn", [
         "SVGLoader.createShapes",
-        "ShapePath.toShapes CW",
-        "ShapePath.toShapes CCW",
-        "ShapePath.toShapes Auto",
+        "ShapePath.toShapes(holes CW)",
+        "ShapePath.toShapes(holes CCW)",
+        "ShapePath.toShapes(holes Auto)",
     ])
         .name("Fill Shape fn")
         .onChange(update);
