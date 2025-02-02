@@ -1,5 +1,4 @@
 import {
-    DoubleSide,
     Box3,
     BufferGeometry,
     Color,
@@ -84,8 +83,8 @@ const parse = (value: string, options: GuiDatas) => {
         const material = new ShaderMaterial({
             vertexShader,
             fragmentShader,
-            side: DoubleSide,
             depthWrite: false,
+            side: options.side,
             wireframe: options.fills === "wireframe",
         });
         const mesh = new Mesh(geometry, material);
@@ -99,8 +98,8 @@ const parse = (value: string, options: GuiDatas) => {
         const material = new ShaderMaterial({
             vertexShader,
             fragmentShader,
-            side: DoubleSide,
             depthWrite: false,
+            side: options.side,
             wireframe: options.strokes === "wireframe",
         });
         const mesh = new Mesh(geometry, material);
@@ -117,11 +116,14 @@ const parse = (value: string, options: GuiDatas) => {
     box.setFromObject(group);
     box.getSize(size);
 
-    group.rotation.x = Math.PI * 0.5;
-
     const center = new Vector2();
     const firstMesh = group.children[0];
     if (firstMesh instanceof Mesh) center.copy(getGeomtryCenter(firstMesh.geometry));
+
+    if (options.bottomView) {
+        group.rotation.x = Math.PI * -0.5;
+        group.position.z = center.y * 2;
+    } else group.rotation.x = Math.PI * 0.5;
 
     return { group, width: size.x, height: size.y, center, error };
 };

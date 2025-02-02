@@ -1,4 +1,4 @@
-import { BufferAttribute, BufferGeometry, Color, Vector2 } from "three";
+import { BufferAttribute, BufferGeometry, Color, DoubleSide, Vector2 } from "three";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 export const onHMR = (cb: () => void) => {
@@ -45,6 +45,7 @@ export const mergeGeometries = (geometries: BufferGeometry[]) => {
     geometry.computeBoundingBox();
     return geometry;
 };
+
 export const getGeomtryCenter = (geometry: BufferGeometry) => {
     const positions = geometry.getAttribute("position");
 
@@ -65,7 +66,7 @@ export const guiDatas = {
     fn: "SVGLoader.createShapes",
     strokes: "full",
     fills: "full",
-
+    side: DoubleSide,
     helpers: false,
     bottomView: false,
 };
