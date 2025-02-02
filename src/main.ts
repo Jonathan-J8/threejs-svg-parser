@@ -12,7 +12,6 @@ const errorContainer = document.getElementById("error") as HTMLElement;
 
 const update = () => {
     three.scene.clear();
-
     const { group, width, center, error } = parser.parse(svgContainer.innerHTML, guiDatas);
 
     if (guiDatas.helpers) {
@@ -22,9 +21,7 @@ const update = () => {
     }
 
     three.scene.add(group);
-
     errorContainer.innerText = error || "";
-
     return { width, center };
 };
 
@@ -59,21 +56,25 @@ const uploadFile = async () => {
 guiDatas.inputSelect = "part5_not_rendered.svg";
 fecthFile(guiDatas.inputSelect);
 
+gui.add(guiDatas, "helpers").name("Helpers").onChange(update);
+gui.add(guiDatas, "bottomView").name("Bottom view").onChange(update);
+
 {
     const f = gui.addFolder("SVG FILE");
     f.add(guiDatas, "inputSelect", [
-        "part5_not_rendered.svg",
-        "part4_not_rendered.svg",
         "original_fill_only.svg",
         "optimized_fill_only.svg",
         "part1_optimized.svg",
         "part2_optimized.svg",
         "part3_optimized.svg",
         "part4_optimized.svg",
+        "part4_not_rendered.svg",
+        "part5_not_rendered.svg",
+        "triangle2.svg",
     ])
-        .name("Select an file")
+        .name("Select a file")
         .onChange(fecthFile);
-    f.add(guiDatas, "inputFile").name("Or upload a file").onChange(uploadFile);
+    f.add(guiDatas, "inputFile").name("Upload a file").onChange(uploadFile);
     // f.add(guiDatas, "inputUrl").name("Or past a URL").onFinishChange(fecthFile);
 }
 
@@ -92,10 +93,4 @@ fecthFile(guiDatas.inputSelect);
     ])
         .name("Fill Shape fn")
         .onChange(update);
-}
-
-{
-    const f = gui.addFolder("OTHERS");
-    f.add(guiDatas, "helpers").name("Helpers").onChange(update);
-    f.add(guiDatas, "bottomView").name("Bottom view").onChange(update);
 }
